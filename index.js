@@ -2,8 +2,6 @@ import express from 'express'
 import mongoose from 'mongoose'
 import { userRouter } from './routes/user.js'
 
-const app = express()
-
 async function DbConnect () {
   await mongoose.connect(process.env.CONNECTION_STRING)
   console.log('db connection successful')
@@ -15,6 +13,9 @@ try {
   console.log(error)
 }
 
+const app = express()
+app.use(express.json())
+
 app.get('/', (req, res) => {
   res.send('hello world')
 })
@@ -23,7 +24,7 @@ app.get('/api/test', (req, res) => {
   res.send('test is successful')
 })
 
-app.use('/user', userRouter)
+app.use('/api/user', userRouter)
 
 const PORT = process.env.PORT ?? 1234
 
